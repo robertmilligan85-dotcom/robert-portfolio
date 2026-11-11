@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robert Milligan — Video Producer | Technical Director | Editor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --bg-surface: #111827;
+      --bg-surface-elevated: #1f2937;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --accent: #14b8a6;
+      --accent-hover: #0d9488;
+      --border-color: #374151;
+      --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-stack);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background-color: rgba(11, 15, 25, 0.95);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+    }
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand { font-size: 1.2rem; font-weight: 700; color: var(--text-main); text-decoration: none; letter-spacing: -0.02em; }
+    .brand span { color: var(--accent); }
+    nav ul { display: flex; list-style: none; gap: 1.5rem; }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    nav a:hover, nav a.active { color: var(--accent); }
+    main { flex: 1; max-width: 1100px; width: 100%; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .hero { text-align: center; padding: 3rem 1rem 4rem; max-width: 800px; margin: 0 auto; }
+    .hero h1 { font-size: 2.75rem; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: -0.03em; }
+    .hero .title { font-size: 1.25rem; color: var(--accent); font-weight: 500; margin-bottom: 0.75rem; }
+    .hero .tagline { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 2rem; }
+    .hero .intro { font-size: 1.1rem; color: #d1d5db; line-height: 1.7; text-align: left; background: var(--bg-surface); padding: 1.75rem; border-radius: 8px; border: 1px solid var(--border-color); }
+    .hero .intro p + p { margin-top: 1rem; }
+    .section-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 2rem; border-left: 4px solid var(--accent); padding-left: 0.75rem; letter-spacing: -0.02em; }
+    .page-intro { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2.5rem; max-width: 850px; line-height: 1.7; }
+    .video-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+    .video-card { background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+    .video-container { position: relative; width: 100%; padding-top: 56.25%; background-color: #000; }
+    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+    .video-details { padding: 1.75rem; flex: 1; display: flex; flex-direction: column; }
+    .badge { align-self: flex-start; background: rgba(20, 184, 166, 0.1); color: var(--accent); font-size: 0.75rem; text-transform: uppercase; font-weight: 600; padding: 0.3rem 0.6rem; border-radius: 4px; margin-bottom: 0.75rem; letter-spacing: 0.05em; }
+    .video-details h3 { font-size: 1.35rem; margin-bottom: 0.75rem; }
+    .video-details p { color: #d1d5db; margin-bottom: 1rem; line-height: 1.6; }
+    .video-meta { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.9rem; color: var(--text-muted); }
+    .video-meta strong { color: var(--text-main); }
+    .direct-link { display: inline-block; margin-top: 0.75rem; font-size: 0.85rem; color: var(--accent); text-decoration: underline; }
+    .direct-link:hover { color: var(--accent-hover); }
+    .cta-container { display: flex; justify-content: center; gap: 1rem; margin-top: 3.5rem; flex-wrap: wrap; }
+    .btn { display: inline-block; background: var(--accent); color: #000; font-weight: 600; padding: 0.85rem 1.75rem; border-radius: 6px; text-decoration: none; transition: background 0.2s; cursor: pointer; border: none; font-size: 0.95rem; }
+    .btn:hover { background: var(--accent-hover); }
+    .btn-secondary { background: var(--bg-surface-elevated); color: var(--text-main); border: 1px solid var(--border-color); }
+    .btn-secondary:hover { background: var(--border-color); }
+    .case-study { background: var(--bg-surface); border: 1px solid var(--border-color); border-left: 4px solid var(--accent); border-radius: 6px; padding: 2rem; margin-top: 3rem; }
+    .case-study h3 { font-size: 1.35rem; margin-bottom: 0.5rem; }
+    .case-study-meta { font-size: 0.9rem; color: var(--accent); margin-bottom: 1rem; font-weight: 500; }
+    .case-study p { color: #d1d5db; line-height: 1.7; margin-bottom: 1rem; }
+    .case-study p:last-child { margin-bottom: 0; }
+    .list-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; padding: 2rem; margin-top: 2.5rem; }
+    .list-card h3 { font-size: 1.25rem; margin-bottom: 1.25rem; }
+    .list-card ul { list-style-position: inside; color: #d1d5db; line-height: 1.8; }
+    .about-section { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-bio { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; padding: 2.25rem; line-height: 1.8; color: #d1d5db; }
+    .about-bio p + p { margin-top: 1.25rem; }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+    .skill-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; }
+    .skill-card h4 { font-size: 1.05rem; color: var(--accent); margin-bottom: 0.75rem; }
+    .skill-card p { font-size: 0.9rem; color: #d1d5db; line-height: 1.6; }
+    .contact-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; padding: 2.25rem; margin-top: 2rem; text-align: center; }
+    .contact-links { display: flex; justify-content: center; gap: 1.25rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    footer { border-top: 1px solid var(--border-color); text-align: center; padding: 2rem 1.5rem; color: var(--text-muted); font-size: 0.85rem; background: var(--bg-surface); }
+    @media (max-width: 768px) {
+      .nav-container { flex-direction: column; gap: 1rem; }
+      nav ul { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+      .hero h1 { font-size: 2.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="#home" class="brand" onclick="navigateTo('home')">Robert <span>Milligan</span></a>
+      <nav>
+        <ul>
+          <li><a id="nav-home" class="active" onclick="navigateTo('home')">Home</a></li>
+          <li><a id="nav-video" onclick="navigateTo('video')">Video Production</a></li>
+          <li><a id="nav-live" onclick="navigateTo('live')">Live Production</a></li>
+          <li><a id="nav-about" onclick="navigateTo('about')">About & Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- PAGE 1: HOME -->
+    <section id="page-home" class="page active">
+      <div class="hero">
+        <h1>Robert Milligan</h1>
+        <div class="title">Video Producer | Technical Director | Editor</div>
+        <div class="tagline">Independent Production. Multicamera Broadcasting. Creative Storytelling.</div>
+        <div class="intro">
+          <p>I'm a video producer, technical director, and editor with experience spanning municipal television, documentary storytelling, live broadcasting, multicamera production, and independent filmmaking.</p>
+          <p>My work combines creative storytelling with hands-on technical production. Whether producing a television episode independently or directing a live multicamera broadcast, I bring the experience to manage complex productions from planning through final delivery.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title">Featured Work</h2>
+      <div class="video-grid">
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/VHRtdFilxPI" title="Prescott Today — Wastewater Treatment Facility" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-details">
+            <span class="badge">Independent Multicamera Field Production</span>
+            <h3>Prescott Today — Wastewater Treatment Facility</h3>
+            <p>Independent multicamera field production across numerous locations in an operational wastewater treatment facility. Robert managed cameras, location audio, extensive supporting footage, and postproduction, working primarily as a one-person crew.</p>
+            <a href="https://youtu.be/VHRtdFilxPI" target="_blank" rel="noopener noreferrer" class="direct-link">Watch on YouTube ↗</a>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/xy5pTYjBIBE" title="Firewise Testimonial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-details">
+            <span class="badge">Documentary / Unscripted Interview</span>
+            <h3>Firewise Testimonial</h3>
+            <p>An unscripted public-safety testimonial produced independently, including interviewing, cinematography, audio recording, story development, and editing.</p>
+            <a href="https://youtu.be/xy5pTYjBIBE" target="_blank" rel="noopener noreferrer" class="direct-link">Watch on YouTube ↗</a>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/HTq4SrgIzrc" title="Livestream Production Compilation" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-details">
+            <span class="badge">Live Multicamera Broadcasting</span>
+            <h3>Livestream Production Compilation</h3>
+            <p>A selection of multicamera live productions demonstrating technical direction, camera operation, broadcast coordination, and event coverage. Robert's specific responsibilities varied between productions.</p>
+            <a href="https://youtu.be/HTq4SrgIzrc" target="_blank" rel="noopener noreferrer" class="direct-link">Watch on YouTube ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-container">
+        <button class="btn" onclick="navigateTo('video')">View All Video Production</button>
+        <button class="btn btn-secondary" onclick="navigateTo('live')">View Live Production Work</button>
+      </div>
+    </section>
+
+    <!-- PAGE 2: VIDEO PRODUCTION -->
+    <section id="page-video" class="page">
+      <h2 class="section-title">Video Production</h2>
+      <p class="page-intro">From scripted municipal features to documentary interviews and location-based television, my production experience includes cinematography, lighting, sound, multicamera acquisition, editing, and postproduction.</p>
+
+      <div class="video-grid">
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/Yg32cUeFQQ4" title="Prescott Recreation Services" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-details">
+            <span class="badge">Scripted Municipal Video</span>
+            <h3>Prescott Recreation Services</h3>
+            <p>Produced a promotional overview of Prescott's Recreation Services department. Working from an existing script, Robert handled the production process, translating the material into a visually engaging presentation through cinematography, lighting, direction, and editing.</p>
+            <div class="video-meta">
+              <strong>Responsibilities:</strong> Video production, camera operation, lighting, visual storytelling, editing.<br>
+              <strong>Original Production:</strong> City of Prescott
+            </div>
+            <a href="https://youtu.be/Yg32cUeFQQ4" target="_blank" rel="noopener noreferrer" class="direct-link">Watch on YouTube ↗</a>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/PFL6MtF3DtY" title="Public Works — Everything We Do Matters to Someone" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-details">
+            <span class="badge">Scripted Departmental Production</span>
+            <h3>Public Works — Everything We Do Matters to Someone</h3>
+            <p>Produced a municipal department feature highlighting the people, infrastructure, equipment, and operations of Prescott Public Works. Working from a supplied script, Robert independently planned and captured footage that brought the department's responsibilities to life.</p>
+            <div class="video-meta">
+              <strong>Responsibilities:</strong> Production, cinematography, B-roll acquisition, editing.<br>
+              <strong>Original Production:</strong> City of Prescott
+            </div>
+            <a href="https://youtu.be/PFL6MtF3DtY" target="_blank" rel="noopener noreferrer" class="direct-link">Watch on YouTube ↗</a>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/xy5pTYjBIBE" title="Firewise Testimonial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-details">
+            <span class="badge">Documentary / Unscripted Interview</span>
+            <h3>Firewise Testimonial</h3>
+            <p>An independently produced public-safety testimonial built around a real person's experience. Robert conducted the interview, recorded picture and sound, and shaped the finished story through editing.</p>
+            <div class="video-meta">
+              <strong>Responsibilities:</strong> Interviewing, cinematography, location audio, editing, story development.
+            </div>
+            <a href="https://youtu.be/xy5pTYjBIBE" target="_blank" rel="noopener noreferrer" class="direct-link">Watch on YouTube ↗</a>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/VHRtdFilxPI" title="Prescott Today — Wastewater Treatment Facility" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-details">
+            <span class="badge">Multicamera Field Television</span>
+            <h3>Prescott Today — Wastewater Treatment Facility</h3>
+            <p>A technically complex television episode filmed across numerous locations inside a functioning wastewater treatment facility. Working primarily alone, Robert managed multiple cameras, audio recording, extensive B-roll, and the complete postproduction process. Multiple camera recordings were synchronized and edited after filming rather than switched live.</p>
+            <div class="video-meta">
+              <strong>Responsibilities:</strong> Field production, camera operation, audio recording, multicamera editing, postproduction.<br>
+              <strong>Original Production:</strong> City of Prescott — Prescott Today
+            </div>
+            <a href="https://youtu.be/VHRtdFilxPI" target="_blank" rel="noopener noreferrer" class="direct-link">Watch on YouTube ↗</a>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/DhspYy9dzJM" title="Prescott Today — Veterans Day Parade" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-details">
+            <span class="badge">Studio Television / Green-Screen Production</span>
+            <h3>Prescott Today — Veterans Day Parade</h3>
+            <p>A studio interview production integrating parade footage and historical imagery. Robert managed studio camera setups, lighting, green-screen production, recording, compositing, and editing. The production incorporated archival photographs supplied by the guest and footage from previous parade broadcasts.</p>
+            <div class="video-meta">
+              <strong>Responsibilities:</strong> Studio production, lighting, camera operation, green-screen compositing, editing.<br>
+              <strong>Original Production:</strong> City of Prescott — Prescott Today
+            </div>
+            <a href="https://youtu.be/DhspYy9dzJM" target="_blank" rel="noopener noreferrer" class="direct-link">Watch on YouTube ↗</a>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/db6vQ_60_vs" title="Prescott Today — Rodeo Grounds" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-details">
+            <span class="badge">Location-Based Multicamera Television</span>
+            <h3>Prescott Today — Rodeo Grounds</h3>
+            <p>Produced a television episode using a portable, multicamera interview setup at the Prescott Rodeo Grounds. Robert managed the cameras, lighting, and audio, recording isolated camera feeds and completing the multicamera edit in postproduction.</p>
+            <div class="video-meta">
+              <strong>Responsibilities:</strong> Location production, camera operation, lighting, audio, multicamera editing.<br>
+              <strong>Original Production:</strong> City of Prescott — Prescott Today
+            </div>
+            <a href="https://youtu.be/db6vQ_60_vs" target="_blank" rel="noopener noreferrer" class="direct-link">Watch on YouTube ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: LIVE PRODUCTION -->
+    <section id="page-live" class="page">
+      <h2 class="section-title">Live Production</h2>
+      <p class="page-intro">My live production experience includes technical direction, multicamera switching, livestream operation, broadcast coordination, and event coverage for municipal, nonprofit, educational, and community organizations. I've worked both independently and as part of production crews, adapting workflows to the size and technical requirements of each event.</p>
+
+      <div class="video-card">
+        <div class="video-container">
+          <iframe src="https://www.youtube.com/embed/HTq4SrgIzrc" title="Livestream Production Compilation" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-details">
+          <span class="badge">Featured Compilation</span>
+          <h3>Livestream Production Compilation</h3>
+          <p>The compilation includes examples of sports broadcasts, public events, political debates, parades, and live performances. Some productions involved a single technician, while others required larger camera and production teams. Robert's responsibilities varied by event and included technical direction, live switching, camera operation, and livestream production.</p>
+          <a href="https://youtu.be/HTq4SrgIzrc" target="_blank" rel="noopener noreferrer" class="direct-link">Watch on YouTube ↗</a>
+        </div>
+      </div>
+
+      <div class="case-study">
+        <h3>Featured Case Study: Dancing for the Stars</h3>
+        <div class="case-study-meta">Organization: Boys & Girls Club | Production Type: Live Multicamera Fundraising Broadcast</div>
+        <p>Robert served as technical director and live video switcher for the Dancing for the Stars fundraising event.</p>
+        <p>He operated the production control center and coordinated camera operators through headset communications. The camera team included both experienced production personnel and young people involved with the Boys & Girls Club, combining professional live production with hands-on learning opportunities.</p>
+        <p>The event reached approximately 6,000 live viewers. <em>(Production footage is featured in the compilation above.)</em></p>
+      </div>
+
+      <div class="list-card">
+        <h3>Additional Live Production Experience</h3>
+        <ul>
+          <li>Municipal government meetings and community programming</li>
+          <li>Live sports coverage</li>
+          <li>Parades and public celebrations</li>
+          <li>Educational lectures, symposiums, and presentations</li>
+          <li>Nonprofit fundraising events</li>
+          <li>Multicamera livestreams and event broadcasts</li>
+          <li>Broadcast scheduling and channel operations</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PAGE 4: ABOUT & CONTACT -->
+    <section id="page-about" class="page">
+      <h2 class="section-title">About & Contact</h2>
+      
+      <div class="about-section">
+        <div class="about-bio">
+          <p>I'm a video producer, technical director, and editor based in Prescott, Arizona.</p>
+          <p>My background includes municipal television, public-access broadcasting, educational media, live events, documentary production, and independent filmmaking.</p>
+          <p>I've worked across the entire production process, from developing concepts and setting up equipment to directing cameras, managing audio, editing footage, and delivering finished programs.</p>
+          <p>I'm comfortable working independently on complex productions as well as coordinating camera operators and technical crews during live events. My experience also includes broadcast systems, classroom audiovisual support, troubleshooting, and live production infrastructure.</p>
+          <p>I enjoy projects that require a combination of creative thinking, technical problem-solving, and hands-on execution.</p>
+        </div>
+
+        <div>
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Technical Skills</h3>
+          <div class="skills-grid">
+            <div class="skill-card">
+              <h4>Video Editing & Post</h4>
+              <p>Final Cut Pro, Adobe Premiere Pro, Adobe After Effects (basic), Adobe Photoshop, Adobe Audition, multicamera editing, green-screen compositing, audio editing.</p>
+            </div>
+            <div class="skill-card">
+              <h4>Live Production & Broadcast</h4>
+              <p>OBS Studio, Streamlabs Desktop, Wirecast, Livestream Studio, Blackmagic ATEM switchers, PTZ cameras, livestream production, technical direction, camera coordination.</p>
+            </div>
+            <div class="skill-card">
+              <h4>Cinematography & Field</h4>
+              <p>DSLR and video camera operation, multicamera recording, location lighting, interview production, teleprompters, location audio, field recording.</p>
+            </div>
+            <div class="skill-card">
+              <h4>Broadcast & AV Systems</h4>
+              <p>TelVue broadcast automation, Zoom, Microsoft Teams, YouTube Live, Facebook Live, classroom AV support, audiovisual troubleshooting.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="list-card" style="margin-top: 0;">
+          <h3>Professional Background</h3>
+          <p style="color: var(--text-muted); margin-bottom: 1rem;">Relevant organizations and production environments include:</p>
+          <ul>
+            <li>City of Prescott</li>
+            <li>Prescott Media Center</li>
+            <li>Prescott College</li>
+            <li>Boys & Girls Club</li>
+            <li>UP2 Productions</li>
+            <li>Community and nonprofit productions</li>
+          </ul>
+        </div>
+
+        <div class="contact-card">
+          <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Get in Touch</h3>
+          <p style="color: var(--text-muted);">Available for production, technical direction, and editing opportunities.</p>
+          <div class="contact-links">
+            <a href="mailto:yourname@email.com" class="btn">Email Me</a>
+            <a href="#" class="btn btn-secondary">Download Résumé (PDF)</a>
+            <a href="#" class="btn btn-secondary">LinkedIn Profile</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; Robert Milligan. Video Producer | Technical Director | Editor — Prescott, Arizona.</p>
+  </footer>
+
+  <script>
+    function navigateTo(pageId) {
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
+      
+      const targetPage = document.getElementById('page-' + pageId);
+      const targetNav = document.getElementById('nav-' + pageId);
+      
+      if (targetPage) targetPage.classList.add('active');
+      if (targetNav) targetNav.classList.add('active');
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('load', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (['home', 'video', 'live', 'about'].includes(hash)) {
+        navigateTo(hash);
+      }
+    });
+  </script>
+</body>
+</html>
